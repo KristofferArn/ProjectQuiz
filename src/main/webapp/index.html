@@ -1,21 +1,69 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>rest-template</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="jquery-3.2.1.min.js"></script>
-        <script language="javascript">
-            $(document).ready(function() {
-				$.get("rest/thepath", function(data){
-					$("#myid").html(data);
-				});
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz</title>
+    <script src="jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+    <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <div class="container">
+        <table id="table" class="display compact">
+            <thead>
+                <tr><th>Quiz Name</th><th>StartTime</th><th>Nr.Q</th></tr>
+            </thead>
+        </table>
+    </div>
+
+    <script>
+        function doThis() {
+            $.ajax({
+                url: "rest/quizzes",
+                type: "POST",
+                data: JSON.stringify({
+                    id: 1,
+                    name: "JahadaQuiz",
+                    startDate: new Date(),
+                    questions: [
+                        {
+                            question: "Are you there?",
+                            duration: 50000,
+                            answers: ["No", "Yes", "Maybe"],
+                            correctIndex: 1
+                        }
+                    ],
+                    nrQuestions: 10
+                }),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json'
             });
-        </script>
-    </head>
-
-    <body>
-        <div id="myid"></div>
-    </body>
+            $.ajax({
+                url: "rest/quizzes",
+                type: "POST",
+                data: JSON.stringify({
+                    id: 2,
+                    name: "BastardQuiz",
+                    startDate: new Date(),
+                    questions: [
+                        {
+                            question: "Hello?",
+                            duration: 50000,
+                            answers: ["No", "Yes", "Maybe"],
+                            correctIndex: 2
+                        }
+                    ],
+                    nrQuestions: 5
+                }),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json'
+            });
+        }
+        doThis();
+    </script>
+</body>
 </html>
-
