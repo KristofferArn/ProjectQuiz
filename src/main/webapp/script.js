@@ -5,7 +5,6 @@ $("#table").DataTable({
     },
     columns: [
         {data: "name"},
-        {data: "startDate"},
-        {data: "nrQuestions"}
+        {data: "startDate"}
     ]
 });

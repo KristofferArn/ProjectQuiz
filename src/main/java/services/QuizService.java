@@ -1,16 +1,16 @@
 package services;
 
+import beans.Question;
 import beans.Quiz;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Path("/quizzes/")
 public class QuizService {
-    private static Map<Integer, Quiz> quizzes = new HashMap<Integer, Quiz>();
+    private static Map<Integer, Quiz> quizzes = new HashMap<>();
 
     @GET
     @Path("/{quizId}")
@@ -26,33 +26,46 @@ public class QuizService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<Quiz> getKunder() {
+    public Collection<Quiz> getQuizzes() {
         return quizzes.values();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public void addQuiz(Quiz quiz) {
-        if (quizzes.get(quiz.getId()) == null) {
-            quizzes.put(quiz.getId(), quiz);
-        }
+        quizzes.putIfAbsent(quiz.getId(), quiz);
     }
 
     @DELETE
     @Path("/{quizId}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void deleteQuiz(Quiz quiz) {
-        quizzes.remove(quiz.getId());
+    public void deleteQuiz(@PathParam("quizId") int id) {
+        quizzes.remove(id);
     }
+
 
     @PUT
     @Path("/{quizId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void updateKunde(Quiz quiz) {
-        if (quizzes.get(quiz.getId()) == null) {
-            throw new NotFoundException();
-        } else {
-            quizzes.put(quiz.getId(), quiz);
+    public void updateKunde(@PathParam("quizId") int id, Quiz quiz) {
+        if (quiz == null) {
+            throw new NullPointerException("Quiz object can not be null.");
         }
+
+        Quiz found = quizzes.get(id);
+        if (found == null) {
+            throw new NotFoundException("Can not find a quiz with id of " + id + ".");
+        }
+
+        // Get new data.
+        String name = quiz.getName();
+        LocalDateTime startTime = quiz.getStartDate();
+        List<Question> questions = quiz.getQuestions();
+
+        // Update with new information if available.
+        found.setName((name != null) ? name : found.getName());
+        found.setStartDate((startTime != null) ? startTime : found.getStartDate());
+        found.setQuestions((questions != null) ? questions : found.getQuestions());
+
+        quizzes.put(id, found);
     }
 }
