@@ -4,64 +4,16 @@
     <meta charset="UTF-8">
     <title>Quiz</title>
     <script src="jquery-3.2.1.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
-    <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <!--<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">-->
+    <!--<script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>-->
     <link rel="stylesheet" href="bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
+
 </head>
 <body>
 
     <div class="container">
-        <table id="table" class="display compact">
-            <thead>
-                <tr><th>Quiz Name</th><th>StartTime</th></tr>
-            </thead>
-        </table>
     </div>
-
-    <script>
-        function doThis() {
-            $.ajax({
-                url: "rest/quizzes",
-                type: "POST",
-                data: JSON.stringify({
-                    id: 1,
-                    name: "JahadaQuiz",
-                    startDate: "2015-04-17T06:06:51.465Z",
-                    questions: [
-                        {
-                            question: "Are you there?",
-                            duration: 50000,
-                            answers: ["No", "Yes", "Maybe"],
-                            correctIndex: 1
-                        }
-                    ]
-                }),
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json'
-            });
-            $.ajax({
-                url: "rest/quizzes",
-                type: "POST",
-                data: JSON.stringify({
-                    id: 2,
-                    name: "BastardQuiz",
-                    startDate: "2015-04-17T06:06:51.465Z",
-                    questions: [
-                        {
-                            question: "Hello?",
-                            duration: 50000,
-                            answers: ["No", "Yes", "Maybe"],
-                            correctIndex: 2
-                        }
-                    ]
-                }),
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json'
-            });
-        }
-        doThis();
-    </script>
 </body>
 </html>
