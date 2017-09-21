@@ -23,6 +23,9 @@ public class Quiz implements Serializable {
     @XmlElement(name = "questions")
     private List<Question> questions;
 
+    @XmlElement(name = "players")
+    private List<Player> players;
+
     public int getId() {
         return id;
     }
@@ -61,5 +64,13 @@ public class Quiz implements Serializable {
 
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
     }
 }

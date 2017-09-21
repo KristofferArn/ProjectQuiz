@@ -88,11 +88,13 @@ public class QuizService {
 
         // Get new data.
         String name = quiz.getName();
+        String author = quiz.getAuthor();
         Time startTime = quiz.getStartTime();
         List<Question> questions = quiz.getQuestions();
 
         // Update with new information if available.
         found.setName((name != null) ? name : found.getName());
+        found.setAuthor((author != null) ? name : found.getAuthor());
         found.setStartTime((startTime != null) ? startTime : found.getStartTime());
         found.setQuestions((questions != null) ? questions : found.getQuestions());
 
