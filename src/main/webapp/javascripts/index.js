@@ -17,6 +17,7 @@ $(document).ready(function () {
         });
     }
 
+    //Updates the table with quizzes and sets listeners to tableButtons
     function updateTable() {
         tableBody.html("");
         for (var i = 0; i < quizzes.length; i++) {
@@ -73,6 +74,7 @@ $(document).ready(function () {
         }).modal("show");
     }
 
+    // Function that is called when trying to enter a quiz
     function enterQuiz(quizId) {
         QuizREST.getQuiz(quizId, function (data) {
             var players = data.players;

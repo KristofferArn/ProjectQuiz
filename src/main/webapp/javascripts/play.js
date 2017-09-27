@@ -44,7 +44,7 @@ function setTime() {
     }
 }
 
-//Very bad way of doing this, but works for now
+//Increases the score for  the player and patches it to the server, not the best thing to do, but works for now
 function increaseScore() {
     var patchQuiz = {
         players: [{
@@ -68,6 +68,7 @@ function findPlayerIndex() {
     }
 }
 
+//gets the updates quiz and its questions from server
 function getUpdatedQuizAndQuestions() {
     QuizREST.getQuiz(quizId, function (data) {
         quiz = data;
@@ -75,6 +76,7 @@ function getUpdatedQuizAndQuestions() {
     });
 }
 
+//just a simple start function
 function startQuiz() {
     appendQuestionBody();
     displayQuestion(currentQuestion);
@@ -110,7 +112,7 @@ function displayQuestion(questionIndex) {
                     QuizREST.deleteQuiz(quizId, function () {
                         window.location = "http://localhost:8080/ProjectQuiz";
                     });
-                }, 30000);
+                }, 15000);
             } else {
                 answerButtons[question.correctIndex].removeClass("green");
                 currentQuestion++;
@@ -150,6 +152,7 @@ function appendQuestionBody() {
     });
 }
 
+//set listeners for buttons to react to question answers
 function setAnswerListeners(correctIndex) {
     for (var i = 0; i < answerButtons.length; i++) {
         if (i === correctIndex) {
@@ -165,6 +168,7 @@ function setAnswerListeners(correctIndex) {
     }
 }
 
+//Function for disabling and enabling the answerbuttons
 function disableAnswers(disable) {
     if (disable) {
         for (var i = 0; i < answerButtons.length; i++) {
@@ -177,6 +181,7 @@ function disableAnswers(disable) {
     }
 }
 
+//Question countdown
 function countdownDuration(duration, next) {
     var cd = (duration/1000) + 1;
     var interval = setInterval(function () {

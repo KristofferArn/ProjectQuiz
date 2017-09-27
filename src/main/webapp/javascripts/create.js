@@ -43,6 +43,7 @@ $(document).ready(function () {
         }
     });
 
+    //Set the content of the page, with tabs
     function setContent(index) {
         saveQuiz();
         for (var i = 0; i < tabItems.length; i++) {
@@ -76,6 +77,7 @@ $(document).ready(function () {
         setContent(currentTab - 1)
     });
 
+    //Open modal for new question when button is pressed
     newQBtn.click(function () {
         $(".ui.modal").modal({
             closable: true,
@@ -125,6 +127,7 @@ $(document).ready(function () {
         }
     });
 
+    //updates the questionsTable/list
     function updateList() {
         tableBody.html("");
         for (var i = 0; i < questions.length; i++) {
@@ -138,6 +141,7 @@ $(document).ready(function () {
         });
     }
 
+    //clear the modal inputs
     function clearQuestionInputs() {
         $("#questionInput").val("");
         $("#durationInput").val("");
@@ -149,6 +153,7 @@ $(document).ready(function () {
         correctAnswer.val(1);
     }
 
+    //saves the quiz
     function saveQuiz() {
         quizObject.name = $("#nameInput").val();
         quizObject.author = $("#authorInput").val();
@@ -156,8 +161,8 @@ $(document).ready(function () {
         quizObject.questions = questions;
     }
 
+    //Updates the summary
     function updateSummary() {
-        //Summary Name
         $("#summaryName").html(quizObject.name);
         $("#summaryAuthor").html(quizObject.author);
         $("#summaryDate").html(quizObject.startTime);
