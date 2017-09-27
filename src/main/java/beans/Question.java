@@ -3,19 +3,24 @@ package beans;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import java.util.ArrayList;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Question {
     @XmlElement(name = "question")
     private String question;
+
     @XmlElement(name = "duration")
     private int duartion;
+
     @XmlElement(name = "answers")
     private List<String> answers;
+
     @XmlElement(name = "correctIndex")
     private int correctIndex;
+
+    @XmlElement(name = "imageUrl")
+    private String imageUrl;
 
     public String getQuestion() {
         return question;
@@ -37,7 +42,7 @@ public class Question {
         return answers;
     }
 
-    public void setAnswers(ArrayList<String> answers) {
+    public void setAnswers(List<String> answers) {
         this.answers = answers;
     }
 
@@ -47,5 +52,13 @@ public class Question {
 
     public void setCorrectIndex(int correctIndex) {
         this.correctIndex = correctIndex;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

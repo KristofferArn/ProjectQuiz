@@ -1,12 +1,11 @@
 package services;
 
+import beans.Player;
 import beans.Question;
 import beans.Quiz;
-import beans.Time;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Path("/quizzes/")
@@ -14,36 +13,10 @@ public class QuizService {
     private static Map<Integer, Quiz> quizzes = new HashMap<>();
     private static int idTraker = 0;
 
-    //For some start values
-    static {
-        Quiz quiz = new Quiz();
-        quiz.setName("The Best Quiz");
-        quiz.setAuthor("Joakim Sæther");
-        List<Question> questions = new ArrayList<>();
-        Question question = new Question();
-        question.setQuestion("What is 2+2?");
-        ArrayList<String> answers = new ArrayList<>();
-        answers.add("2");
-        answers.add("Potato");
-        answers.add("4");
-        question.setAnswers(answers);
-        question.setCorrectIndex(2);
-        question.setDuartion(5000);
-        questions.add(question);
-        quiz.setQuestions(questions);
-        Time time = new Time();
-        time.setMonth(4);
-        time.setDay(30);
-        time.setHour(20);
-        time.setMinute(30);
-        quiz.setStartTime(time);
-        quizzes.put(idTraker, quiz);
-    }
-
     @GET
     @Path("/{quizId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Quiz getQuiz(@PathParam("quizId") int quizId) {
+    public static Quiz getQuiz(@PathParam("quizId") int quizId) {
         Quiz quiz = quizzes.get(quizId);
         if (quiz != null) {
             return quiz;
@@ -54,13 +27,13 @@ public class QuizService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<Quiz> getQuizzes() {
+    public static Collection<Quiz> getQuizzes() {
         return quizzes.values();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void addQuiz(Quiz quiz) {
+    public static void addQuiz(Quiz quiz) {
         quiz.setId(idTraker);
         quizzes.put(quiz.getId(), quiz);
         idTraker++;
@@ -68,15 +41,26 @@ public class QuizService {
 
     @DELETE
     @Path("/{quizId}")
-    public void deleteQuiz(@PathParam("quizId") int id) {
+    public static void deleteQuiz(@PathParam("quizId") int id) {
         quizzes.remove(id);
     }
 
+    @PATCH
+    @Path("/{quizId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public static void patchQuiz(@PathParam("quizId") int id, Quiz quiz) {
+        updateQuiz(id, quiz, true);
+    }
 
     @PUT
     @Path("/{quizId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void updateKunde(@PathParam("quizId") int id, Quiz quiz) {
+    public static void putQuiz(@PathParam("quizId") int id, Quiz quiz) {
+        updateQuiz(id, quiz, false);
+    }
+
+    //Used for both put and patch
+    private static void updateQuiz(int id, Quiz quiz, boolean patch) {
         if (quiz == null) {
             throw new NullPointerException("Quiz object can not be null.");
         }
@@ -89,14 +73,50 @@ public class QuizService {
         // Get new data.
         String name = quiz.getName();
         String author = quiz.getAuthor();
-        Time startTime = quiz.getStartTime();
+        Date startTime = quiz.getStartTime();
         List<Question> questions = quiz.getQuestions();
+        List<Player> players = quiz.getPlayers();
 
-        // Update with new information if available.
-        found.setName((name != null) ? name : found.getName());
-        found.setAuthor((author != null) ? name : found.getAuthor());
-        found.setStartTime((startTime != null) ? startTime : found.getStartTime());
-        found.setQuestions((questions != null) ? questions : found.getQuestions());
+        // No remove mode, means to not remove any data only add.
+        if (patch) {
+            // Update with new information if available.
+            found.setName((name != null) ? name : found.getName());
+            found.setAuthor((author != null) ? author : found.getAuthor());
+            found.setStartTime((startTime != null) ? startTime : found.getStartTime());
+
+            List<Question> foundQuestions = found.getQuestions();
+            if (questions != null && foundQuestions != null) {
+                // Add new questions and update existing ones.
+                for (Question question : questions) {
+                    if (!foundQuestions.contains(question)) {
+                        foundQuestions.add(question);
+                    } else {
+                        int index = foundQuestions.indexOf(question);
+                        foundQuestions.set(index, question);
+                    }
+                }
+            } else if (questions != null) {
+                found.setQuestions(questions);
+            }
+
+            List<Player> foundPlayerList = found.getPlayers();
+            if (players != null && found.getPlayers() != null) {
+                // Add new players and update existing ones.
+                for (Player player : players) {
+                    if (!foundPlayerList.contains(player)) {
+                        foundPlayerList.add(player);
+                    } else {
+                        int index = foundPlayerList.indexOf(player);
+                        foundPlayerList.set(index, player);
+                    }
+                }
+            } else if (players != null) {
+                found.setPlayers(players);
+            }
+        } else {
+            found = quiz;
+            found.setId(id);
+        }
 
         quizzes.put(id, found);
     }

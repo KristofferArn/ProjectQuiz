@@ -4,6 +4,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -18,13 +20,13 @@ public class Quiz implements Serializable {
     private String author;
 
     @XmlElement(name = "startTime")
-    private Time startTime;
+    private Date startTime;
 
     @XmlElement(name = "questions")
     private List<Question> questions;
 
     @XmlElement(name = "players")
-    private List<Player> players;
+    private List<Player> players = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -50,11 +52,11 @@ public class Quiz implements Serializable {
         this.author = author;
     }
 
-    public Time getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Time startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
